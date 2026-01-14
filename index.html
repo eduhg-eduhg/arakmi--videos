@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيديوهات التاريخ - الدورة الأولى</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: linear-gradient(to bottom, #f5e6d3 0%, #e8d4b8 100%);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Styles */
+        .app-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #FFD700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-back-btn {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .header-back-btn:hover {
+            background: #FFD700;
+            color: #1e3c72;
+            transform: scale(1.1);
+        }
+
+        .header-center {
+            flex: 1;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            border: 2px solid #FFD700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 30px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 26px;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Video Container */
+        .video-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .video-container.active {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .video-title {
+            color: #1e3c72;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Lessons List */
+        .scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #1e3c72;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #2a5298;
+        }
+
+        .lesson-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .lesson-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-color: #FFD700;
+        }
+
+        .lesson-item.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-color: #FFD700;
+        }
+
+        .lesson-item.active .lesson-number,
+        .lesson-item.active .lesson-title {
+            color: white;
+        }
+
+        .lesson-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(30, 60, 114, 0.3);
+        }
+
+        .lesson-item.active .lesson-number {
+            background: #FFD700;
+            color: #1e3c72;
+        }
+
+        .lesson-title {
+            flex: 1;
+            font-size: 18px;
+            color: #1e3c72;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .back-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background: #FFD700;
+            color: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-video-message {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .header-title {
+                font-size: 16px;
+            }
+
+            .header-subtitle {
+                font-size: 11px;
+            }
+
+            .subtitle {
+                font-size: 20px;
+            }
+
+            .lesson-title {
+                font-size: 15px;
+            }
+
+            .scroll-container {
+                max-height: 350px;
+            }
+
+            .lesson-item {
+                padding: 15px;
+            }
+
+            .lesson-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- Header -->
+            <div class="app-header">
+                <a href="javascript:history.back()" class="header-back-btn">
+                    ←
+                </a>
+                <div class="header-center">
+                    <div class="header-title">فيديوهات التاريخ</div>
+                    <div class="header-subtitle">الدورة الأولى - الثالثة إعدادي</div>
+                </div>
+                <div class="header-icon">
+                    📹
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content-area">
+                <h2 class="subtitle">الفيديوهات التعليمية</h2>
+
+                <!-- Video Player Container -->
+                <div id="videoContainer" class="video-container">
+                    <div class="video-title" id="videoTitle"></div>
+                    <div class="video-wrapper">
+                        <iframe id="videoPlayer" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- Lessons List -->
+                <div class="scroll-container">
+                    <div class="lesson-item" onclick="playVideo(0)">
+                        <div class="lesson-number">▶</div>
+                        <div class="lesson-title">ملخصات دروس التاريخ الدورة الاولى</div>
+                    </div>
+                    <div class="lesson-item" onclick="playVideo(1)">
+                        <div class="lesson-number">▶</div>
+                        <div class="lesson-title">التدرب على رسم الخط الزمني للضغوطات الاستعمارية على المغرب</div>
+                    </div>
+
+                </div>
+
+                <button class="back-button" onclick="history.back()">← رجوع إلى القائمة الرئيسية</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // قائمة الفيديوهات مع روابطها
+        const videos = [
+            {
+                title: 'ملخصات دروس التاريخ الدورة الاولى',
+                url: 'data/video1.mp4',
+                type: 'youtube'
+            },
+            {
+                title: 'التدرب على رسم الخط الزمني للضغوطات الاستعمارية على المغرب',
+                url: 'data/video2.mp4',
+                type: 'youtube'
+
+            }
+        ];
+
+        let currentVideoIndex = -1;
+
+        function playVideo(index) {
+            currentVideoIndex = index;
+            const video = videos[index];
+            
+            // Update video player
+            document.getElementById('videoTitle').textContent = video.title;
+            
+            // For YouTube videos, use embed URL with autoplay
+            const videoUrl = video.type === 'youtube' 
+                ? video.url + '?autoplay=1&rel=0&modestbranding=1'
+                : video.url;
+            
+            document.getElementById('videoPlayer').src = videoUrl;
+            
+            // Show video container
+            document.getElementById('videoContainer').classList.add('active');
+            
+            // Update active state on lesson items
+            document.querySelectorAll('.lesson-item').forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('active');
+                    // Scroll to video container smoothly
+                    document.getElementById('videoContainer').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Helper function to convert YouTube share URL to embed URL
+        // Example: https://youtu.be/5KQbm0ANrAo → https://www.youtube.com/embed/5KQbm0ANrAo
+        function getYouTubeEmbedUrl(url) {
+            let videoId = '';
+            
+            // Handle youtu.be format
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0];
+            }
+            // Handle youtube.com/watch format
+            else if (url.includes('youtube.com/watch')) {
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                videoId = urlParams.get('v');
+            }
+            // Handle youtube.com/embed format (already correct)
+            else if (url.includes('youtube.com/embed/')) {
+                return url;
+            }
+            
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+
+        // Auto-play first video on page load (optional)
+        // window.onload = function() {
+        //     playVideo(0);
+        // };
+    </script>
+</body>
+</html>
